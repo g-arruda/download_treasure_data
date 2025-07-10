@@ -193,9 +193,12 @@ class TesouroDireto:
         if df.empty:
             return df
         
-        # Selecionar apenas primeiras 3 colunas (data, taxa, preço)
-        df = df.iloc[:, :3].copy()
+        df = df.iloc[:, [0, 1, 3]].copy()
         df.columns = ['ref_date', 'yield_bid', 'price_bid']
+
+        # Converter colunas numéricas
+        for col in ['yield_bid', 'price_bid']:
+            df[col] = pd.to_numeric(df[col], errors='coerce')
         
         # Converter colunas numéricas
         for col in ['yield_bid', 'price_bid']:
