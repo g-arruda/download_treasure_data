@@ -182,7 +182,7 @@ class TesouroDireto:
     
     def _clean_data(self, df: pd.DataFrame) -> pd.DataFrame:
         """
-        Limpa e processa dados do DataFrame.
+        Limpa e processa dados do DataFrame, capturando bid e ask.
         
         Args:
             df: DataFrame bruto lido do Excel
@@ -192,27 +192,19 @@ class TesouroDireto:
         """
         if df.empty:
             return df
-        
-        df = df.iloc[:, [0, 1, 3]].copy()
-        df.columns = ['ref_date', 'yield_bid', 'price_bid']
-
-        # Converter colunas numéricas
-        for col in ['yield_bid', 'price_bid']:
+        # Selecionar as 5 primeiras colunas para capturar bid e ask
+        df = df.iloc[:, [0, 1, 2, 3, 4]].copy()
+        # Renomear todas as colunas
+        df.columns = ['ref_date', 'yield_bid', 'yield_ask', 'price_bid', 'price_ask']
+        # Converter todas as colunas numéricas
+        for col in ['yield_bid', 'yield_ask', 'price_bid', 'price_ask']:
             df[col] = pd.to_numeric(df[col], errors='coerce')
-        
-        # Converter colunas numéricas
-        for col in ['yield_bid', 'price_bid']:
-            df[col] = pd.to_numeric(df[col], errors='coerce')
-        
         # Processar datas com formato específico para evitar warnings
         df['ref_date'] = pd.to_datetime(df['ref_date'], format='%d/%m/%Y', errors='coerce')
-        
-        # Remover linhas com dados faltantes
+        # Remover linhas com dados faltantes em qualquer uma das colunas
         df = df.dropna()
-        
-        # Remover linhas com preços zerados (exceto yield)
+        # Remover linhas com preços de compra zerados
         df = df[df['price_bid'] != 0]
-        
         return df
     
     def _read_excel_file(self, file_path: Path) -> pd.DataFrame:
