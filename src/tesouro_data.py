@@ -194,8 +194,10 @@ class TesouroDireto:
             return df
         # Selecionar as 5 primeiras colunas para capturar bid e ask
         df = df.iloc[:, [0, 1, 2, 3, 4]].copy()
-        # Renomear todas as colunas
-        df.columns = ['ref_date', 'yield_bid', 'yield_ask', 'price_bid', 'price_ask']
+        # Renomear todas as colunas seguindo a convenção correta:
+        # yield_ask = Taxa Compra Manhã, yield_bid = Taxa Venda Manhã
+        # price_ask = PU Compra Manhã, price_bid = PU Venda Manhã
+        df.columns = ['ref_date', 'yield_ask', 'yield_bid', 'price_ask', 'price_bid']
         # Converter todas as colunas numéricas
         for col in ['yield_bid', 'yield_ask', 'price_bid', 'price_ask']:
             df[col] = pd.to_numeric(df[col], errors='coerce')
