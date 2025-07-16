@@ -8,7 +8,7 @@ with open("requirements.txt", "r", encoding="utf-8") as fh:
 
 setup(
     name="tesouro-data",
-    version="0.2.1",
+    version="0.2.2",
     author="Baseado no GetTDData de Marcelo Perlin",
     description="Biblioteca Python para baixar dados do Tesouro Direto brasileiro",
     long_description=long_description,

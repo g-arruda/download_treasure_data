@@ -35,6 +35,13 @@ from urllib3.util.retry import Retry
 class TesouroDireto:
     """
     Classe principal para baixar e processar dados do Tesouro Direto.
+    Códigos disponíveis:
+    - LFT: Letra Financeira do Tesouro
+    - LTN: Letra do Tesouro Nacional
+    - NTN-C: Nota do Tesouro Nacional série C
+    - NTN-B: Nota do Tesouro Nacional série B
+    - NTN-B Principal: Nota do Tesouro Nacional série B Principal
+    - NTN-F: Nota do Tesouro Nacional série F (antiga NTN-F)
     """
     
     # Tipos de ativos disponíveis
@@ -82,11 +89,11 @@ class TesouroDireto:
         
         Args:
             asset_code: Código do ativo (ex: 'NTN-B Principal')
-            
         Returns:
             Código normalizado (ex: 'NTN-B_Principal')
         """
-        return asset_code.replace(" ", "_").replace("-", "_")
+        # Apenas substitui espaços por underline, mantendo hífen
+        return asset_code.replace(" ", "_")
     
     def _denormalize_asset_code(self, asset_code: str) -> str:
         """
